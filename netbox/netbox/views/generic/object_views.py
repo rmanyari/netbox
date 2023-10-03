@@ -343,6 +343,7 @@ class ObjectDeleteView(GetReturnURLMixin, BaseObjectView):
                 'object_type': self.queryset.model._meta.verbose_name,
                 'form': form,
                 'form_url': form_url,
+                'requires_text_confirmation': True,
                 **self.get_extra_context(request, obj),
             })
 

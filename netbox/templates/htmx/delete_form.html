@@ -12,6 +12,11 @@
         Are you sure you want to <strong class="text-danger">delete</strong> {{ object_type }} <strong>{{ object }}</strong>?
       {% endblocktrans %}
     </p>
+    {% if requires_text_confirmation %}
+      {% blocktrans trimmed %}
+        <input type="text" class="form-control" id="confirmation" name="{{ object_type }}/{{ object }}" placeholder="Type {{ object_type }}/{{ object }} to confirm the deletion.">
+      {% endblocktrans %}
+    {% endif %}
     {% render_form form %}
   </div>
   <div class="modal-footer">
@@ -20,6 +25,22 @@
     {% else %}
       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
     {% endif %}
-    <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+    <button type="submit" id="delete-button" class="btn btn-danger disabled">{% trans "Delete" %}</button>
   </div>
 </form>
+
+<script>
+  deleteBtn = document.getElementById("delete-button")
+  inputField = document.getElementById("confirmation")
+  inputField.addEventListener("keyup", function (event) {
+    if(!deleteBtn.classList.contains("disabled")) {
+      console.log("adding disabled class")
+      deleteBtn.classList.add("disabled")
+    }
+    if (inputField.value === inputField.name) {
+      if(deleteBtn.classList.contains("disabled")) {
+        deleteBtn.classList.remove("disabled")
+      }
+    }
+  });
+</script>
